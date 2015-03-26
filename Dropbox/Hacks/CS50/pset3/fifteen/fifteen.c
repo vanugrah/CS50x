@@ -17,10 +17,10 @@
  
 #define _XOPEN_SOURCE 500
 
-#include <cs50.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 // board's minimal dimension
 #define MIN 3
@@ -33,6 +33,8 @@ int board[MAX][MAX];
 
 // board's dimension
 int d;
+int temporary;
+int tile;
 
 // prototypes
 void clear(void);
@@ -43,7 +45,7 @@ bool move(int tile);
 bool won(void);
 void save(void);
 
-int main(int argc, string argv[])
+int main(int argc, char* argv[])
 {
     // greet player
     greet();
@@ -88,18 +90,29 @@ int main(int argc, string argv[])
         }
 
         // prompt for move
-        printf("Tile to move: ");
-        int tile = GetInt();
+        printf("Tile number to move: ");
+        scanf("%d", &temporary);
+        tile = temporary;
+        printf("Entered tile: %d", tile);
 
-        // move if possible, else report illegality
-        if (!move(tile))
+        // check if valid input 
+        if (tile > d * d || d < 1)
         {
             printf("\nIllegal move.\n");
-            usleep(500000);
+            usleep(50000);
+        } else {
+            // move if possible, else report illegality
+            if (!move(tile))
+            {
+                printf("\nIllegal move.\n");
+                usleep(50000);
+            }
         }
 
+        
+
         // sleep for animation's sake
-        usleep(500000);
+        usleep(50000);
     }
 
     // that's all folks
@@ -336,7 +349,7 @@ bool won(void)
 void save(void)
 {
     // log
-    const string log = "log.txt";
+    const char* log = "log.txt";
 
     // delete existing log, if any, before first save
     static bool saved = false;

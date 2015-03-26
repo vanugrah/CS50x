@@ -6,7 +6,9 @@
 #
 
 fifteen: fifteen.c
-	clang -ggdb3 -O0 -std=c99 -Wall -Werror -o fifteen fifteen.c -lcs50 -lm
+	gcc -std=c99 -Wall fifteen.c -o fifteen
 
 clean:
 	rm -f *.o a.out core fifteen
+debug:
+	gdb fifteen
